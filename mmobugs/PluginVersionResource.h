@@ -15,3 +15,7 @@
 
 #define MQ2_VERSION_CSV_UNQUOTED 0,0,0,0
 #define MQ2_PLUGIN_VERSION       "0.0.0.0"
+#define MQ2_PLUGIN_COMMENTS      "MQ2-Krakty MQ2AutoBuff plugin"
+#define MQ2_PLUGIN_COMPANY       "Krakty"
+#define MQ2_PLUGIN_COPYRIGHT     "GPLv2"
+#define MQ2_PLUGIN_PRODUCT       "MQ2-Krakty"
