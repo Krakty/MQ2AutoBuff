@@ -8,6 +8,22 @@ using namespace std;
 PreSetup("MQ2AutoBuff");
 PLUGIN_VERSION(6.10);
 
+// -----------------------------------------------------------------
+// MMOBugs subscription-gate shims
+// -----------------------------------------------------------------
+// Upstream MMOBugs builds against a private header that defines
+// MMOAllowedPlugin / MMORequiredAccess / MMOAccessName / GetRequiredAccess
+// / LOK as part of their subscription-tier gating. The Krakty fork has
+// no subscription model, so stub these to "always allowed" so the
+// plugin compiles standalone. Behavior change vs. upstream: the
+// subscription warning is never printed and the plugin always activates.
+static const char* PLUGIN_NAME = "MQ2AutoBuff";
+static const char* MMOAccessName[] = { "None", "Bronze", "Silver", "Gold" };
+static int MMORequiredAccess = 0;
+static inline bool MMOAllowedPlugin(HMODULE, const char*) { return true; }
+static inline int  GetRequiredAccess() { return 0; }
+static inline bool LOK(int) { return true; }
+
 // Max index # from INI - they will be put in order & rewritten, but this is the highest Buff## entry to look for
 constexpr const int MAX_BUFFS         = 300;
 constexpr const int MAX_NAMES         = 500;
