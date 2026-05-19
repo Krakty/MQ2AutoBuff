@@ -24,6 +24,11 @@ static inline bool MMOAllowedPlugin(HMODULE, const char*) { return true; }
 static inline int  GetRequiredAccess() { return 0; }
 static inline bool LOK(int) { return true; }
 
+// Upstream's `mmo` global is a single-field activity tracker living on
+// the subscription manager. Stub it here so the Active gate compiles
+// (plugin always considered "active" once initialized).
+static struct { bool Active = false; } mmo;
+
 // Max index # from INI - they will be put in order & rewritten, but this is the highest Buff## entry to look for
 constexpr const int MAX_BUFFS         = 300;
 constexpr const int MAX_NAMES         = 500;
@@ -82,7 +87,7 @@ void buffQueueAdd(char *sender, char *buff, char *type);
 int  checkBuffRequest(char *sender, char *message);
 void checkBuffQueue();
 bool CastBuff(PTR_T_BUFFREQ ptr);
-void tokenize(T_TOKENS *tokens, char *list, char *sep);
+void tokenize(T_TOKENS *tokens, char *list, const char *sep);
 
 void AB_Help(PSPAWNINFO pChar, PCHAR szLine);
 void AB_Toggle(PSPAWNINFO pChar, PCHAR szLine);
@@ -1039,7 +1044,7 @@ bool CastBuff(PTR_T_BUFFREQ ptr)
 }
 
 // Function to tokenize a string
-void tokenize(T_TOKENS *tokens, char *list, char *sep)
+void tokenize(T_TOKENS *tokens, char *list, const char *sep)
 {
 	char szTemp[MAX_STRING];
 	char *token, *nt;
